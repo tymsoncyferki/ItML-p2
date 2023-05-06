@@ -1,13 +1,11 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from preprocessing import preprocessing
 
 data = pd.read_csv('heart_disease_patients.csv')
-df = preprocessing(data)
-
+df = preprocessing(data, rem_over=False)
 
 # optimal numebr of clusters - elbow method
 def num_of_clus_elbow(data):
@@ -24,13 +22,6 @@ def num_of_clus_elbow(data):
     return elbow_point
 
 
-# # ploting inertia
-# plt.plot(K,Sum_of_squared_distances,'bx-')
-# plt.xlabel('Values of K') 
-# plt.ylabel('Sum of squared distances') 
-# plt.title('Elbow Method For Optimal k')
-# plt.show()
-
 # optimal number of clusters - silhouette method
 def num_of_clus_silhouette(data):
     silhouette_scores = []
@@ -44,6 +35,25 @@ def num_of_clus_silhouette(data):
     return silhouette_point
 
 
-num_clusters = num_of_clus_silhouette(df)
-kmeans = KMeans(n_clusters=num_clusters, init='k-means++', max_iter=300, n_init=10, random_state=0)
-y_kmeans = kmeans.fit_predict(data)
+def k_means_alg(df, meth_num_clus = "silhouette"):
+    """
+    Finds labels
+    Parameters:
+    df (dataframe): Dataframe that is to be transformed.
+    meth_num_clus (str): determining number of clusters
+        "silhouette": silhouette method
+        "elbow": elbow method
+
+    Returns:
+    numpy.array: dataframe with labels
+    """
+    if meth_num_clus == "elbow":
+        num_clusters = num_of_clus_elbow(df)
+    else:
+        num_clusters = num_of_clus_silhouette(df)
+
+    kmeans = KMeans(n_clusters=num_clusters, init='k-means++', max_iter=300, n_init=10, random_state=0)
+    y_kmeans = kmeans.fit_predict(df)
+    #  df["label"] = y_kmeans
+
+    return y_kmeans

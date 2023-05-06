@@ -54,6 +54,11 @@ def remove_overshadowing(df):
     
     return df_reduced
 
+def standarize(df):
+    scaler = StandardScaler()
+    df_scaled = scaler.fit_transform(df)
+    df = pd.DataFrame(df_scaled, columns=df.columns)
+    return df
 
 def preprocessing(df, rep_out=True, rem_over = True, stand = True, handle_na="replace"):
     """
@@ -86,6 +91,9 @@ def preprocessing(df, rep_out=True, rem_over = True, stand = True, handle_na="re
     # removing overshadowing variables 
     if rem_over:
         df = remove_overshadowing(df)
+
+    if stand:
+        df =standarize(df)
 
     return df
     
