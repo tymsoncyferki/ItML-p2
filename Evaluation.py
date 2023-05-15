@@ -5,11 +5,14 @@ from KMeans import k_means_alg
 import numpy as np
 import pandas as pd
 
+# reading and preprocessing dataframe
 data = pd.read_csv('heart_disease_patients.csv')
 df = preprocessing(data, rem_over=False)
 
+# applying algorithm
 y_kmeans = k_means_alg(df)
 
+# some scores
 print(silhouette_score(df,y_kmeans))
 print(calinski_harabasz_score(df, y_kmeans))
 
