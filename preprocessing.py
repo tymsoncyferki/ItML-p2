@@ -134,7 +134,10 @@ def preprocessing(df: pd.DataFrame,
     :param df: Dataframe that is to be transformed.
     :param rep_out: Should outliers be replaced?
     :param rem_over: Should overshadowing variables be replaced?
-    :param stand: Should dataframe be standarized?
+    :param process:
+        "stand": standarization
+        "minmax": minmax scaler
+        "norm": normalization
     :param rem_cor: Should 'slope' be deleted?
     :param handle_na:
         "drop": removing na values
