@@ -1,6 +1,7 @@
 import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
+from kmodes.kprototypes import KPrototypes
 
 
 def num_of_clus_elbow(data) -> int:
@@ -56,8 +57,22 @@ def k_means_alg(df, meth_num_clus="silhouette") -> list[int]:
     else:
         num_clusters = num_of_clus_silhouette(df)
 
+    print(f'number of clusters: {num_clusters}')
     kmeans = KMeans(n_clusters=num_clusters, init='k-means++', max_iter=300, n_init=10, random_state=0)
     y_kmeans = kmeans.fit_predict(df)
     #  df["label"] = y_kmeans
 
     return y_kmeans
+
+
+def k_prototypes_alg(df, meth_num_clus="silhouette"):
+    if meth_num_clus == "elbow":
+        num_clusters = num_of_clus_elbow(df)
+    else:
+        num_clusters = num_of_clus_silhouette(df)
+
+    print(f'number of clusters: {num_clusters}')
+    kp = KPrototypes(n_clusters=num_clusters, max_iter=300, n_init=10, random_state=0)
+    y_kp = kp.fit_predict(df, categorical=[2, 3, 6, 7, 9])
+    return y_kp
+

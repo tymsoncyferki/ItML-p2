@@ -1,20 +1,55 @@
 from sklearn.metrics import silhouette_score, calinski_harabasz_score, silhouette_samples
 import matplotlib.pyplot as plt
 from preprocessing import preprocessing
-from KMeans import k_means_alg
+from KMeans import k_means_alg, k_prototypes_alg
 import numpy as np
 import pandas as pd
 
-# reading and preprocessing dataframe
-data = pd.read_csv('heart_disease_patients.csv')
-df = preprocessing(data, rem_over=False)
 
-# applying algorithm
-y_kmeans = k_means_alg(df)
+def main():
+    # reading and preprocessing dataframe
+    data = pd.read_csv('heart_disease_patients.csv')
 
-# some scores
-print(silhouette_score(df,y_kmeans))
-print(calinski_harabasz_score(df, y_kmeans))
+    print('Baseline model:')
+    df = preprocessing(data, rem_over=False, process='stand')
+    # applying algorithm
+    y_kmeans = k_means_alg(df)
+    # some scores
+    print(f"silhouette score: {silhouette_score(df,y_kmeans)}")
+    print(f"calinski harabasz score: {calinski_harabasz_score(df, y_kmeans)}")
+
+    print('Baseline model (minmax):')
+    df = preprocessing(data, rem_over=False, process='minmax')
+    # applying algorithm
+    y_kmeans = k_means_alg(df)
+    # some scores
+    print(f"silhouette score: {silhouette_score(df,y_kmeans)}")
+    print(f"calinski harabasz score: {calinski_harabasz_score(df, y_kmeans)}")
+
+    print('K Prototypes:')
+    df2 = preprocessing(data, rem_over=False, process='stand')
+    # applying algorithm
+    y_kp = k_prototypes_alg(df2)
+    # some scores
+    print(f"silhouette score: {silhouette_score(df2, y_kp)}")
+    print(f"calinski harabasz score: {calinski_harabasz_score(df2, y_kp)}")
+
+    print('K Prototypes (minmax):')
+    df2 = preprocessing(data, rem_over=False, process='minmax')
+    # applying algorithm
+    y_kp = k_prototypes_alg(df2)
+    # some scores
+    print(f"silhouette score: {silhouette_score(df2, y_kp)}")
+    print(f"calinski harabasz score: {calinski_harabasz_score(df2, y_kp)}")
+
+    print('K Prototypes (normalize):')
+    df2 = preprocessing(data, rem_over=False, process='norm')
+    # applying algorithm
+    y_kp = k_prototypes_alg(df2)
+    # some scores
+    print(f"silhouette score: {silhouette_score(df2, y_kp)}")
+    print(f"calinski harabasz score: {calinski_harabasz_score(df2, y_kp)}")
+
 
 def plot_silhouette(df, y_kmeans):
     # Compute silhouette scores for each sample
@@ -67,3 +102,6 @@ def plot_silhouette(df, y_kmeans):
 # plt.ylabel('Sum of squared distances') 
 # plt.title('Elbow Method For Optimal k')
 # plt.show()
+
+if __name__ == "__main__":
+    main()

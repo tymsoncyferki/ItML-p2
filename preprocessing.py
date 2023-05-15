@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, Normalizer, MinMaxScaler
 
-df = pd.read_csv('heart_disease_patients.csv')
+# df = pd.read_csv('heart_disease_patients.csv')
 
 
 # droping id column
@@ -14,7 +14,17 @@ def remove_id(df):
     :param df: dataframe
     :return:
     """
-    df.drop('id', axis=1, inplace=True)
+    return df.drop('id', axis=1)
+
+
+def remove_slope(df):
+    """
+        Drops slope column from dataframe.
+
+    :param df: dataframe
+    :return:
+    """
+    return df.drop('slope', axis=1)
 
 
 # replacing na values
@@ -102,8 +112,22 @@ def standarize(df):
     return df
 
 
+def normalize(df):
+    normalizer = Normalizer()
+    df_normalized = normalizer.fit_transform(df)
+    df = pd.DataFrame(df_normalized, columns=df.columns)
+    return df
+
+
+def minmax(df):
+    minmaxer = MinMaxScaler()
+    df_scaled = minmaxer.fit_transform(df)
+    df = pd.DataFrame(df_scaled, columns=df.columns, index=df.index)
+    return df
+
+
 def preprocessing(df: pd.DataFrame,
-                  rep_out=True, rem_over=True, stand=True, handle_na="replace") -> pd.DataFrame:
+                  rep_out=True, rem_over=True, process='stand', rem_cor=False, handle_na="replace") -> pd.DataFrame:
     """
         Performs preprocessing.
 
@@ -111,17 +135,21 @@ def preprocessing(df: pd.DataFrame,
     :param rep_out: Should outliers be replaced?
     :param rem_over: Should overshadowing variables be replaced?
     :param stand: Should dataframe be standarized?
+    :param rem_cor: Should 'slope' be deleted?
     :param handle_na:
         "drop": removing na values
         "replace": replacing na values with median (numerical) or mode (categorical) depending on the type
     :return: preprocessed dataframe
     """
     # removing id because it holds no information
-    remove_id(df)
+    df = remove_id(df)
+
+    if rem_cor:
+        df = remove_slope(df)
 
     # handling na
     if handle_na == "drop":
-        df.dropna(axis=0, inplace=True)
+        df = df.dropna(axis=0, inplace=True)
     elif handle_na == "replace":
         df = replace_na(df)
 
@@ -133,7 +161,11 @@ def preprocessing(df: pd.DataFrame,
     if rem_over:
         df = remove_overshadowing(df)
 
-    if stand:
+    if process == 'stand':
         df = standarize(df)
+    elif process == 'minmax':
+        df = minmax(df)
+    elif process == 'norm':
+        df = normalize(df)
 
     return df
