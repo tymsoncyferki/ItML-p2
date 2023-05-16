@@ -10,56 +10,37 @@ def main():
     # reading and preprocessing dataframe
     data = pd.read_csv('heart_disease_patients.csv')
 
-    print('Baseline model:')
-    df = preprocessing(data, rem_over=False, process='stand')
-    # applying algorithm
-    y_kmeans = k_means_alg(df)
-    # some scores
-    print(f"silhouette score: {silhouette_score(df,y_kmeans)}")
-    print(f"calinski harabasz score: {calinski_harabasz_score(df, y_kmeans)}")
+    # print('Baseline model:')
+    # df = preprocessing(data, rem_over=False, process='stand')
+    # # applying algorithm
+    # y_kmeans = k_means_alg(df)
+    # # some scores
+    # print(f"silhouette score: {silhouette_score(df,y_kmeans)}")
+    # print(f"calinski harabasz score: {calinski_harabasz_score(df, y_kmeans)}")
 
-    print('Baseline model (minmax):')
-    df = preprocessing(data, rem_over=False, process='minmax')
-    # applying algorithm
-    y_kmeans = k_means_alg(df)
-    # some scores
-    print(f"silhouette score: {silhouette_score(df,y_kmeans)}")
-    print(f"calinski harabasz score: {calinski_harabasz_score(df, y_kmeans)}")
-
-    print('K Prototypes:')
-    df2 = preprocessing(data, rem_over=False, process='stand')
-    # applying algorithm
-    y_kp = k_prototypes_alg(df2)
-    # some scores
-    print(f"silhouette score: {silhouette_score(df2, y_kp)}")
-    print(f"calinski harabasz score: {calinski_harabasz_score(df2, y_kp)}")
-
-    print('K Prototypes (minmax):')
-    df2 = preprocessing(data, rem_over=False, process='minmax')
-    # applying algorithm
-    y_kp = k_prototypes_alg(df2)
-    # some scores
-    print(f"silhouette score: {silhouette_score(df2, y_kp)}")
-    print(f"calinski harabasz score: {calinski_harabasz_score(df2, y_kp)}")
-
-    print('K Prototypes (normalize):')
-    df2 = preprocessing(data, rem_over=False, process='norm')
-    # applying algorithm
-    y_kp = k_prototypes_alg(df2)
-    # some scores
-    print(f"silhouette score: {silhouette_score(df2, y_kp)}")
-    print(f"calinski harabasz score: {calinski_harabasz_score(df2, y_kp)}")
+    processing = ['stand', 'minmax', 'norm']
+    algorithms = [(k_means_alg, 'K Means'), (k_prototypes_alg, 'K Prototypes')]
+    for alg, name in algorithms:
+        print('-----')
+        print(name)
+        for proc in processing:
+            print(f'Processing: {proc}')
+            df = preprocessing(data, rem_over=False, process=proc)
+            y = alg(df)
+            print(f"silhouette score: {silhouette_score(df, y)}")
+            print(f"calinski harabasz score: {calinski_harabasz_score(df, y)}")
+            plot_silhouette(df, y)
 
 
 def plot_silhouette(df, y_kmeans):
     # Compute silhouette scores for each sample
     silhouette_avg = silhouette_score(df, y_kmeans)
     sample_silhouette_values = silhouette_samples(df, y_kmeans)
-
+    n = len(np.unique(y_kmeans))
     # Plot silhouette plot for 2 clusters
     fig, ax = plt.subplots()
     y_lower = 10
-    for i in range(2):
+    for i in range(n):
         # Aggregate the silhouette scores for samples belonging to cluster i
         ith_cluster_silhouette_values = \
             sample_silhouette_values[y_kmeans == i]
@@ -67,7 +48,7 @@ def plot_silhouette(df, y_kmeans):
         size_cluster_i = ith_cluster_silhouette_values.shape[0]
         y_upper = y_lower + size_cluster_i
 
-        color = plt.cm.Spectral(float(i) / 2)
+        color = plt.cm.Spectral(float(i) / n)
         ax.fill_betweenx(np.arange(y_lower, y_upper),
                         0, ith_cluster_silhouette_values,
                         facecolor=color, edgecolor=color, alpha=0.7)
@@ -78,7 +59,7 @@ def plot_silhouette(df, y_kmeans):
         # Compute the new y_lower for next plot
         y_lower = y_upper + 10
 
-    ax.set_title("Silhouette plot for 2 clusters")
+    ax.set_title(f"Silhouette plot for {n} clusters")
     ax.set_xlabel("Silhouette coefficient values")
     ax.set_ylabel("Cluster labels")
 

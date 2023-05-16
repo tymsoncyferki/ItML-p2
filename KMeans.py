@@ -2,6 +2,7 @@ import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from kmodes.kprototypes import KPrototypes
+import matplotlib.pyplot as plt
 
 
 def num_of_clus_elbow(data) -> int:
@@ -21,6 +22,13 @@ def num_of_clus_elbow(data) -> int:
     # finding elbow point
     sd = np.diff(sum_of_squared_distances, 2)
     elbow_point = np.argmax(sd) + 2
+
+    plt.figure(figsize=(8, 5))
+    plt.plot(range(1, 10), sum_of_squared_distances, marker='o')
+    plt.xlabel('Number of clusters')
+    plt.ylabel('WCSS')
+    plt.show()
+
     return elbow_point
 
 
@@ -39,6 +47,13 @@ def num_of_clus_silhouette(data) -> int:
         silhouette_scores.append(score)
 
     silhouette_point = np.argmax(silhouette_scores) + 2
+
+    plt.figure(figsize=(8, 5))
+    plt.plot(range(1, 10), silhouette_scores, marker='o')
+    plt.xlabel('Number of clusters')
+    plt.ylabel('Silhouette score')
+    plt.show()
+
     return silhouette_point
 
 
@@ -73,6 +88,6 @@ def k_prototypes_alg(df, meth_num_clus="silhouette"):
 
     print(f'number of clusters: {num_clusters}')
     kp = KPrototypes(n_clusters=num_clusters, max_iter=300, n_init=10, random_state=0)
-    y_kp = kp.fit_predict(df, categorical=[2, 3, 6, 7, 9])
+    y_kp = kp.fit_predict(df, categorical=[1, 2, 5, 6, 8, 10])
     return y_kp
 

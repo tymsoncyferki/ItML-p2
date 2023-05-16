@@ -54,8 +54,8 @@ def replace_outliers(data, k=1.5):
     :param k: A multiplier to adjust the outlier threshold. By default, k is set to 1.5.
     :return: dataframe
     """
-    # TODO: Which columns to replace outliers from
-    for col in data.columns:
+    # TODO: Which columns to replace outliers from (definitely not boolean ones)
+    for col in ['age', 'trestbps', 'chol', 'thalach', 'oldpeak']:
         q1, q3 = np.percentile(data[col], [25, 75])
         iqr = q3 - q1
         lower_bound = q1 - k * iqr
