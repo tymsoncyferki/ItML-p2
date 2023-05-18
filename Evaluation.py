@@ -25,11 +25,11 @@ def main():
         print(name)
         for proc in processing:
             print(f'Processing: {proc}')
-            df = preprocessing(data, rem_over=False, process=proc)
+            df = preprocessing(data, rem_over=True, process=proc)
             y = alg(df)
             print(f"silhouette score: {silhouette_score(df, y)}")
             print(f"calinski harabasz score: {calinski_harabasz_score(df, y)}")
-            plot_silhouette(df, y)
+            # plot_silhouette(df, y)
 
 
 def plot_silhouette(df, y_kmeans):
@@ -50,12 +50,12 @@ def plot_silhouette(df, y_kmeans):
 
         color = plt.cm.Spectral(float(i) / n)
         ax.fill_betweenx(np.arange(y_lower, y_upper),
-                        0, ith_cluster_silhouette_values,
-                        facecolor=color, edgecolor=color, alpha=0.7)
+                         0, ith_cluster_silhouette_values,
+                         facecolor=color, edgecolor=color, alpha=0.7)
 
         # Label silhouette plots with their cluster numbers at the middle
         ax.text(-0.05, y_lower + 0.5 * size_cluster_i, str(i))
-        
+
         # Compute the new y_lower for next plot
         y_lower = y_upper + 10
 
@@ -76,7 +76,7 @@ def plot_silhouette(df, y_kmeans):
 
     plt.show()
 
-    
+
 # # ploting inertia
 # plt.plot(K,Sum_of_squared_distances,'bx-')
 # plt.xlabel('Values of K') 

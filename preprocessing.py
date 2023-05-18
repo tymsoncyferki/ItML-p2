@@ -3,8 +3,6 @@ import numpy as np
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler, Normalizer, MinMaxScaler
 
-# df = pd.read_csv('heart_disease_patients.csv')
-
 
 # droping id column
 def remove_id(df):
@@ -15,16 +13,6 @@ def remove_id(df):
     :return:
     """
     return df.drop('id', axis=1)
-
-
-def remove_slope(df):
-    """
-        Drops slope column from dataframe.
-
-    :param df: dataframe
-    :return:
-    """
-    return df.drop('slope', axis=1)
 
 
 # replacing na values
@@ -54,7 +42,6 @@ def replace_outliers(data, k=1.5):
     :param k: A multiplier to adjust the outlier threshold. By default, k is set to 1.5.
     :return: dataframe
     """
-    # TODO: Which columns to replace outliers from (definitely not boolean ones)
     for col in ['age', 'trestbps', 'chol', 'thalach', 'oldpeak']:
         q1, q3 = np.percentile(data[col], [25, 75])
         iqr = q3 - q1
@@ -78,13 +65,10 @@ def remove_overshadowing(df):
             The columns of the new DataFrame are named "PC1", "PC2", etc.
 
     """
-    # Standardize the data
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(df)
 
     # Perform PCA
     pca = PCA()
-    X_pca = pca.fit_transform(X_scaled)
+    X_pca = pca.fit_transform(df)
 
     # Determine the number of principal components to retain
     explained_variances = pca.explained_variance_ratio_
@@ -127,7 +111,7 @@ def minmax(df):
 
 
 def preprocessing(df: pd.DataFrame,
-                  rep_out=True, rem_over=True, process='stand', rem_cor=False, handle_na="replace") -> pd.DataFrame:
+                  rep_out=True, rem_over=True, process='stand', handle_na="replace") -> pd.DataFrame:
     """
         Performs preprocessing.
 
@@ -138,7 +122,6 @@ def preprocessing(df: pd.DataFrame,
         "stand": standarization
         "minmax": minmax scaler
         "norm": normalization
-    :param rem_cor: Should 'slope' be deleted?
     :param handle_na:
         "drop": removing na values
         "replace": replacing na values with median (numerical) or mode (categorical) depending on the type
@@ -146,9 +129,6 @@ def preprocessing(df: pd.DataFrame,
     """
     # removing id because it holds no information
     df = remove_id(df)
-
-    if rem_cor:
-        df = remove_slope(df)
 
     # handling na
     if handle_na == "drop":
