@@ -12,7 +12,11 @@ def remove_id(df):
     :param df: dataframe
     :return:
     """
-    return df.drop('id', axis=1)
+    try:
+        df = df.drop('id', axis=1)
+    except KeyError:
+        pass
+    return df
 
 
 # replacing na values
