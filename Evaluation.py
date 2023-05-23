@@ -1,10 +1,11 @@
 from sklearn.metrics import silhouette_score, calinski_harabasz_score, silhouette_samples
 import matplotlib.pyplot as plt
-from Preprocessing import preprocessing
+from preprocessing import preprocessing
 from KMeans import k_means_alg, k_prototypes_alg
 from OtherAlgorithms import dbscan
 import numpy as np
 import pandas as pd
+
 
 def medians_for_clusters(df):
     medians = df.groupby('label').median()
@@ -53,26 +54,21 @@ def main():
     # print(f"silhouette score: {silhouette_score(df,y_kmeans)}")
     # print(f"calinski harabasz score: {calinski_harabasz_score(df, y_kmeans)}")
 
-    processing = ['stand', 'norm', 'minmax']
-    # 'stand', 'norm', 'minmax',
     # (k_prototypes_alg, 'K Prototypes')
     # algorithms = [(k_means_alg, 'K Means')]
     # for alg, name in algorithms:
     #     print('-----')
     #     print(name)
-    #     for proc in processing:
-    #         print(f'Processing: {proc}')
-    #         df = preprocessing(data, rem_over=True, process=proc)
-    #         df_with_labels, model = alg(df)
-    #         df_without_labels = df_with_labels.drop("label", axis=1)
-    #         y = df_with_labels['label']
-    #         print(f"silhouette score: {silhouette_score(df_without_labels, y)}")
-    #         print(f"calinski harabasz score: {calinski_harabasz_score(df_without_labels, y)}")
-    #         data_with_labels = data.copy()
-    #         data_with_labels['label'] = df_with_labels['label']
-    #         print(medians_for_clusters(data_with_labels))
-            # plot_all_columns(df_with_labels)
-
+    #     df = preprocessing(data, rem_over=True, process='minmax')
+    #     df_with_labels, model = alg(df)
+    #     df_without_labels = df_with_labels.drop("label", axis=1)
+    #     y = df_with_labels['label']
+    #     print(f"silhouette score: {silhouette_score(df_without_labels, y)}")
+    #     print(f"calinski harabasz score: {calinski_harabasz_score(df_without_labels, y)}")
+    #     data_with_labels = data.copy()
+    #     data_with_labels['label'] = df_with_labels['label']
+    #     print(medians_for_clusters(data_with_labels))
+    #     plot_all_columns(df_with_labels)
 
 
 if __name__ == "__main__":

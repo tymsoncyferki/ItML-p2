@@ -55,6 +55,11 @@ def replace_outliers(data, k=1.5):
         data.loc[mask, col] = lower_bound
         mask = (data[col] > upper_bound)
         data.loc[mask, col] = upper_bound
+
+    value = data['restecg'].value_counts().idxmax()
+    data['restecg'] = data['restecg'].replace(1, value)
+    data['restecg'] = data['restecg'].replace(2, 1)
+
     return data
 
 
@@ -114,14 +119,27 @@ def minmax(df):
     return df
 
 
+def encode_columns(df):
+    """
+        Encodes categorical column cp (chest pain type)
+
+    :param df: Dataframe
+    :return: Encoded dataframe
+    """
+    df = pd.get_dummies(df, columns=['cp'], prefix='cp', dtype=int)
+    df = df.rename(columns={"cp_1": "cp_typ_ang", "cp_2": "cp_atyp_ang", "cp_3": "cp_non_ang", "cp_4": "cp_asympt"})
+    return df
+
+
 def preprocessing(df: pd.DataFrame,
-                  rep_out=True, rem_over=True, process='stand', handle_na="replace") -> pd.DataFrame:
+                  rep_out=True, rem_over=True, encode=True, process='stand', handle_na="replace") -> pd.DataFrame:
     """
         Performs preprocessing.
 
     :param df: Dataframe that is to be transformed.
     :param rep_out: Should outliers be replaced?
     :param rem_over: Should overshadowing variables be replaced?
+    :param encode: Should categorical columns be encoded?
     :param process:
         "stand": standarization
         "minmax": minmax scaler
@@ -143,6 +161,9 @@ def preprocessing(df: pd.DataFrame,
     # replacing outliers
     if rep_out:
         df = replace_outliers(df)
+
+    if encode:
+        df = encode_columns(df)
 
     if process == 'stand':
         df = standarize(df)

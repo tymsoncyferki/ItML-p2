@@ -4,7 +4,7 @@ from sklearn.cluster import DBSCAN
 from sklearn.metrics import silhouette_score, calinski_harabasz_score
 from sklearn.neighbors import NearestNeighbors
 import sklearn
-from Preprocessing import preprocessing
+from preprocessing import preprocessing
 import pandas as pd
 
 
@@ -72,6 +72,7 @@ def dbscan(df, proc):
         epsilon = 0.05
     dbscan = DBSCAN(eps=epsilon, min_samples=minsamples)
     labels = dbscan.fit_predict(df)
+    df = df.copy()
     df['label'] = labels
 
     return df, dbscan

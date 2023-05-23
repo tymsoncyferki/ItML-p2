@@ -58,7 +58,7 @@ def num_of_clus_silhouette(data) -> int:
     return silhouette_point
 
 
-def k_means_alg(df, meth_num_clus="silhouette", num_clusters=None) -> list[int]:
+def k_means_alg(df, meth_num_clus="silhouette", num_clusters=None):
     """
     Finds labels
 
@@ -74,10 +74,11 @@ def k_means_alg(df, meth_num_clus="silhouette", num_clusters=None) -> list[int]:
             num_clusters = num_of_clus_elbow(df)
         else:
             num_clusters = num_of_clus_silhouette(df)
-    # num_clusters = 4
+
     print(f'number of clusters: {num_clusters}')
     kmeans = KMeans(n_clusters=num_clusters, init='k-means++', max_iter=300, n_init=10, random_state=0)
     y_kmeans = kmeans.fit_predict(df)
+    df = df.copy()
     df["label"] = y_kmeans
 
     return df, kmeans
@@ -89,7 +90,7 @@ def k_prototypes_alg(df, meth_num_clus="silhouette", num_clusters=None):
             num_clusters = num_of_clus_elbow(df)
         else:
             num_clusters = num_of_clus_silhouette(df)
-    # num_clusters = 4
+
     print(f'number of clusters: {num_clusters}')
     kp = KPrototypes(n_clusters=num_clusters, max_iter=300, n_init=10, random_state=0)
     y_kp = kp.fit_predict(df, categorical=[1, 2, 5, 6, 8, 10])
@@ -98,35 +99,4 @@ def k_prototypes_alg(df, meth_num_clus="silhouette", num_clusters=None):
     return df, kp
 
 
-def min_interclust_dist(X, label):
-    clusters = set(label)
-    global_min_dist = np.inf
-    for cluster_i in clusters:
-        cluster_i_idx = np.where(label == cluster_i)
-        for cluster_j in clusters:
-            if cluster_i != cluster_j:
-                cluster_j_idx = np.where(label == cluster_j)
-                interclust_min_dist = np.min(distance.cdist(X.iloc[cluster_i_idx], X.iloc[cluster_j_idx]))
-                global_min_dist = np.min([global_min_dist, interclust_min_dist])
-    return global_min_dist
-
-
-def _inclust_mean_dists(X, label):
-    clusters = set(label)
-    inclust_dist_list = []
-    for cluster_i in clusters:
-        cluster_i_idx = np.where(label == cluster_i)
-        inclust_dist = np.mean(distance.pdist(X.iloc[cluster_i_idx]))
-        inclust_dist_list.append(inclust_dist)
-    return inclust_dist_list
-
-
-def mean_inclust_dist(X, label):
-    inclust_dist_list = _inclust_mean_dists(X, label)
-    return np.mean(inclust_dist_list)
-
-
-def std_dev_of_inclust_dist(X, label):
-    inclust_dist_list = _inclust_mean_dists(X, label)
-    return np.std(inclust_dist_list)
 
