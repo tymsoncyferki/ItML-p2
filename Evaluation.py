@@ -2,7 +2,7 @@ from sklearn.metrics import silhouette_score, calinski_harabasz_score, silhouett
 import matplotlib.pyplot as plt
 from preprocessing import preprocessing
 from KMeans import k_means_alg, k_prototypes_alg
-from OtherAlgorithms import dbscan
+from dbscan import dbscan
 import numpy as np
 import pandas as pd
 

@@ -46,6 +46,7 @@ def replace_outliers(data, k=1.5):
     :param k: A multiplier to adjust the outlier threshold. By default, k is set to 1.5.
     :return: dataframe
     """
+    data = data.copy()
     for col in ['age', 'trestbps', 'chol', 'thalach', 'oldpeak']:
         q1, q3 = np.percentile(data[col], [25, 75])
         iqr = q3 - q1
@@ -154,7 +155,7 @@ def preprocessing(df: pd.DataFrame,
 
     # handling na
     if handle_na == "drop":
-        df = df.dropna(axis=0, inplace=True)
+        df = df.dropna(axis=0)
     elif handle_na == "replace":
         df = replace_na(df)
 
