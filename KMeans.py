@@ -67,7 +67,7 @@ def k_means_alg(df, meth_num_clus="silhouette", num_clusters=None) -> list[int]:
         "silhouette": silhouette method
         "elbow": elbow method
     :param num_clusters: Specifies number of clusters
-    :return: List with labels
+    :return: dataframe with labels, model
     """
     if not num_clusters:
         if meth_num_clus == "elbow":
@@ -78,9 +78,9 @@ def k_means_alg(df, meth_num_clus="silhouette", num_clusters=None) -> list[int]:
     print(f'number of clusters: {num_clusters}')
     kmeans = KMeans(n_clusters=num_clusters, init='k-means++', max_iter=300, n_init=10, random_state=0)
     y_kmeans = kmeans.fit_predict(df)
-    #  df["label"] = y_kmeans
+    df["label"] = y_kmeans
 
-    return y_kmeans
+    return df, kmeans
 
 
 def k_prototypes_alg(df, meth_num_clus="silhouette", num_clusters=None):
@@ -93,7 +93,9 @@ def k_prototypes_alg(df, meth_num_clus="silhouette", num_clusters=None):
     print(f'number of clusters: {num_clusters}')
     kp = KPrototypes(n_clusters=num_clusters, max_iter=300, n_init=10, random_state=0)
     y_kp = kp.fit_predict(df, categorical=[1, 2, 5, 6, 8, 10])
-    return y_kp
+    df["label"] = y_kp
+
+    return df, kp
 
 
 def min_interclust_dist(X, label):

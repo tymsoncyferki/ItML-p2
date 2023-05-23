@@ -10,7 +10,7 @@ def remove_id(df):
         Drops id column from dataframe.
 
     :param df: dataframe
-    :return:
+    :return: dataframe
     """
     try:
         df = df.drop('id', axis=1)
@@ -144,15 +144,15 @@ def preprocessing(df: pd.DataFrame,
     if rep_out:
         df = replace_outliers(df)
 
-    # removing overshadowing variables 
-    if rem_over:
-        df = remove_overshadowing(df)
-
     if process == 'stand':
         df = standarize(df)
     elif process == 'minmax':
         df = minmax(df)
     elif process == 'norm':
         df = normalize(df)
+
+    # removing overshadowing variables
+    if rem_over:
+        df = remove_overshadowing(df)
 
     return df
