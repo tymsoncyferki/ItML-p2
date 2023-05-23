@@ -52,7 +52,7 @@ metrices = {
     'Average distance between points in the same class': mean_inclust_dist,
     'Standard deviation of distance between points in the same class': std_dev_of_inclust_dist,
     # 'Average distance to cluster center': mean_dist_to_center,
-    'Silhouette': silhouette_score,
-    'calinski_harabasz_score': calinski_harabasz_score,
-    'davies_bouldin_score': davies_bouldin_score
+    'Silhouette score': silhouette_score,
+    'Calinski-Harabasz index': calinski_harabasz_score,
+    'Davies Bouldin index': davies_bouldin_score
 }

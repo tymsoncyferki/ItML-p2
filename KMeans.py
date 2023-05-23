@@ -75,7 +75,7 @@ def k_means_alg(df, meth_num_clus="silhouette", num_clusters=None):
         else:
             num_clusters = num_of_clus_silhouette(df)
 
-    print(f'number of clusters: {num_clusters}')
+    print(f'Number of clusters: {num_clusters}')
     kmeans = KMeans(n_clusters=num_clusters, init='k-means++', max_iter=300, n_init=10, random_state=0)
     y_kmeans = kmeans.fit_predict(df)
     df = df.copy()
@@ -91,9 +91,10 @@ def k_prototypes_alg(df, meth_num_clus="silhouette", num_clusters=None):
         else:
             num_clusters = num_of_clus_silhouette(df)
 
-    print(f'number of clusters: {num_clusters}')
+    print(f'Number of clusters: {num_clusters}')
     kp = KPrototypes(n_clusters=num_clusters, max_iter=300, n_init=10, random_state=0)
     y_kp = kp.fit_predict(df, categorical=[1, 2, 5, 6, 8, 10])
+    df = df.copy()
     df["label"] = y_kp
 
     return df, kp
