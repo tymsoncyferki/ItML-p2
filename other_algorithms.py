@@ -21,12 +21,7 @@ def k_medoids_alg(df, meth_num_clus="silhouette", num_clusters=None):
     return df, kmedoids
 
 
-def aglomerative_alg(df, meth_num_clus="silhouette", num_clusters=None, linkage='average'):
-    if not num_clusters:
-        if meth_num_clus == "elbow":
-            num_clusters = num_of_clus_elbow(df)
-        else:
-            num_clusters = num_of_clus_silhouette(df)
+def aglomerative_alg(df, num_clusters, linkage):
 
     print(f'Number of clusters: {num_clusters}')
     aglinks = AgglomerativeClustering(n_clusters=num_clusters, linkage=linkage)
