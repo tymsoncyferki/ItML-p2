@@ -6,7 +6,6 @@ from sklearn.neighbors import NearestNeighbors
 import sklearn
 from preprocessing import preprocessing
 import pandas as pd
-from sklearn_extra.cluster import KMedoids
 
 
 def medians_for_clusters(df):
