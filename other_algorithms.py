@@ -39,7 +39,7 @@ def minibatch_alg(df, meth_num_clus="silhouette", num_clusters=None):
         else:
             num_clusters = num_of_clus_silhouette(df)
 
-    miniBatchKmeans = MiniBatchKMeans(n_clusters=num_clusters)
+    miniBatchKmeans = MiniBatchKMeans(n_clusters=num_clusters, random_state=0)
     y_minibatch = miniBatchKmeans.fit_predict(df)
     df = df.copy()
     df["label"] = y_minibatch
@@ -49,7 +49,7 @@ def minibatch_alg(df, meth_num_clus="silhouette", num_clusters=None):
 
 def gmm_alg(df, n_components, covariance_type='full'):
 
-    gmm = GaussianMixture(n_components=n_components, covariance_type=covariance_type)
+    gmm = GaussianMixture(n_components=n_components, covariance_type=covariance_type, random_state=0)
     y_gmm = gmm.fit_predict(df)
     df = df.copy()
     df['label'] = y_gmm
