@@ -127,13 +127,23 @@ def encode_columns(df):
     :param df: Dataframe
     :return: Encoded dataframe
     """
+    df = df.copy()
     df = pd.get_dummies(df, columns=['cp'], prefix='cp', dtype=int)
     df = df.rename(columns={"cp_1": "cp_typ_ang", "cp_2": "cp_atyp_ang", "cp_3": "cp_non_ang", "cp_4": "cp_asympt"})
+
+    return df
+
+
+def encode_cp(df):
+
+    df = df.copy()
+    df['cp'] = df['cp'].replace({4: 0, 3: 1, 2: 1})
+
     return df
 
 
 def preprocessing(df: pd.DataFrame,
-                  rep_out=True, rem_over=True, encode=True, process='stand', handle_na="replace") -> pd.DataFrame:
+                  rep_out=True, rem_over=True, encode=True, process='stand', handle_na="replace", cp=False) -> pd.DataFrame:
     """
         Performs preprocessing.
 
@@ -148,6 +158,7 @@ def preprocessing(df: pd.DataFrame,
     :param handle_na:
         "drop": removing na values
         "replace": replacing na values with median (numerical) or mode (categorical) depending on the type
+    :param cp: make cp column binary
     :return: preprocessed dataframe
     """
     # removing id because it holds no information
@@ -165,6 +176,8 @@ def preprocessing(df: pd.DataFrame,
 
     if encode:
         df = encode_columns(df)
+    elif cp:
+        df = encode_cp(df)
 
     if process == 'stand':
         df = standarize(df)

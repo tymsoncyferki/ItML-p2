@@ -47,12 +47,12 @@ def minibatch_alg(df, meth_num_clus="silhouette", num_clusters=None):
     return df, miniBatchKmeans
 
 
-def gmm_alg(df, n_components, covariance_type='full'):
+def gmm_alg(dfg, n_components, covariance_type='full'):
 
-    gmm = GaussianMixture(n_components=n_components, covariance_type=covariance_type, random_state=0)
-    y_gmm = gmm.fit_predict(df)
-    df = df.copy()
-    df['label'] = y_gmm
+    gmm = GaussianMixture(n_components=n_components, covariance_type=covariance_type, random_state=10)
+    y_gmm = gmm.fit_predict(dfg)
+    dfg = dfg.copy()
+    dfg['label'] = y_gmm
 
-    return df, y_gmm
+    return dfg, gmm
 
