@@ -17,7 +17,7 @@ At first we wanted to delete outliers but after consultation with our validation
 ## Model
 We obtained optimal number of clusters from Silhouette method. After testing multiple clustering algorithms we have chosen KMeans - the most common algorithm yet the most effective. It got the best results in almost all metrics. We also checked the clustering on 3D visualizations of principal components:
 
-<img src="https://github.com/tymsoncyferki/ItML-Fake-News-Detection/blob/main/readme_files/roc_curve.png" width=500>
+<img src="https://github.com/tymsoncyferki/heart-disease-clusterization/blob/main/data/pca_visualization.png" width=500>
 
 ## Interpretation
 We created random forest model in order to extract feature importance for each cluster. By analyzing means, medians, boxplot charts and feature importance we could create descriptions of each cluster. To learn more about the results and whole process of clusterization open project_presentation file. 
