@@ -79,7 +79,7 @@ def dbscan(df, proc):
 
 
 def main():
-    data = pd.read_csv('train.csv')
+    data = pd.read_csv('data/train.csv')
     processing = ['stand', 'norm', 'minmax']
     # for proc in processing:
     #     df = preprocessing(data, rem_over=True, process=proc)

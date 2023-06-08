@@ -90,7 +90,7 @@ def plot_silhouette(df, y_kmeans):
 
 def main():
     # reading and preprocessing dataframe
-    data = pd.read_csv('heart_disease_patients.csv')
+    data = pd.read_csv('data/heart_disease_patients.csv')
 
     print('Baseline model:')
     df = preprocessing(data, rem_over=False, process='stand')
