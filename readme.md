@@ -20,4 +20,4 @@ We obtained optimal number of clusters from Silhouette method. After testing mul
 <img src="https://github.com/tymsoncyferki/heart-disease-clusterization/blob/main/data/pca_visualization.png" width=500>
 
 ## Interpretation
-We created random forest model in order to extract feature importance for each cluster. By analyzing means, medians, boxplot charts and feature importance we could create descriptions of each cluster. To learn more about the results and whole process of clusterization open project_presentation file. 
+We created random forest model in order to extract feature importance for each cluster. By analyzing means, medians, boxplot charts and feature importance we could create descriptions of each cluster. To learn more about the results and whole process of clusterization check out our [presentation](https://github.com/tymsoncyferki/heart-disease-clusterization/blob/main/project_presentation.pdf). For more technical insights open [jupyter notebook](https://github.com/tymsoncyferki/heart-disease-clusterization/blob/main/project_notebook.ipynb) (beware that some visualizations may not load automatically). 
